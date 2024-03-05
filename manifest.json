@@ -1,15 +1,15 @@
 {
   "manifest_version": 3,
-  "name": "Billy the Buck: Impulse Purchase Timer!",
+  "name": "Billy the Buck: Personal Budgeting Assistant!",
   "version": "1.0",
-  "description": "Billy the Personal Budgeting AI: Timer!",
+  "description": "Billy the Buck helps you budget and learn about financial literacy!",
   "icons": {
     "16": "images/icon16.png",
     "48": "images/icon48.png",
     "128": "images/icon128.png"
   },
   "action": {
-    "default_popup": "timer-popup.html",
+    "default_popup": "popup.html",
     "default_icon": {
       "16": "images/icon16.png",
       "48": "images/icon48.png",
@@ -17,9 +17,19 @@
     },
     "default_title": "Timer"
   },
-  "permissions": ["storage", "alarms", "notifications", "tabs"],
+  "permissions": [
+    "storage",
+    "alarms",
+    "notifications",
+    "tabs"
+  ],
   "background": {
-    "service_worker": "timer-background.js"
+    "service_worker": "background.js"
+  },
+  "sandbox": {
+    "pages": [
+      "popup.html"
+    ]
   },
   "content_security_policy": {
     "sandbox": "sandbox allow-scripts; script-src 'unsafe-eval' 'self' https://pyscript.net https://cdn.jsdelivr.net"
@@ -27,8 +37,7 @@
   "content_scripts": [
     {
       "matches": ["*://*/*"],
-      "js": ["timer-content.js"]
+      "js": ["content.js"]
     }
-  ],
-  "options_page": "options/options.html"
+  ]
 }

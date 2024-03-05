@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budget Planner</title>
+  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+  <style>
+    * {
+      img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      }
+      h1 {text-align: center;}
+      p {text-align: center;}
+      div {text-align: center;}
+    }
+  </style>
+  <script src="content.js"></script>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+
+<body style="min-width:300px;min-height:300px">
+
+  <script src="popup.js"></script>
+  <h1>Billy the Buck wants to help you save! Think before you buy!</h1>
+  <img src="images/icon128.png" alt="Billy the Buck" class="center">
+  <h2>Input monthly salary below and click Budget:</h2>
+  <input type="text" name="salary" id="salaryInput" size="3">
+  <button py-click="plot()">Budget</button>
+  <div id="plotDiv"></div>
+
+  <py-config>
+    packages = ["matplotlib"]
+  </py-config>
+
+  <py-script>
+    import js
+    import matplotlib.pyplot as plt
+
+    def plot():
+      x_values = ["needs", "wants", "savings"]
+      y_values = []
+      salary = js.document.getElementById('salaryInput').value
+      salary = int(salary)
+      needs = int(salary * 0.5)
+      wants = int(salary * 0.333)
+      savings = int(salary * 0.2)
+      y_values.extend([needs, wants, savings])
+      plt.figure(figsize=plt.figaspect(1))
+      values = y_values
+      labels = x_values
+
+      def make_autopct(values):
+          def my_autopct(pct):
+              total = sum(values)
+              val = int(round(pct * total / 100.0))
+              return '{p:.2f}%  ({v:d})'.format(p=pct, v=val)
+          return my_autopct
+
+      plt.pie(values, labels=labels, autopct=make_autopct(values))
+      plt.show()
+      plt.plot()
+      display(plt, target="plotDiv", append=False)
+
+    def info():
+      webbrowser.open("https://www.canva.com/design/DAF3o-Gs1p4/3qEJ2W4iavPSrPF82Sf4vw/edit?utm_content=DAF3o-Gs1p4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton")
+  </py-script>
+
+  <h2>Want to learn more about this project?</h2>
+  <input type="button" id="create" value="Click this button to generate my QR code, then scan!"><br>
+  <img id="img" src="">
+  <script src="qrcoder.js"></script>
+</body>
+
+</html>
